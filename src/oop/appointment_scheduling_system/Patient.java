@@ -1,6 +1,6 @@
 package oop.appointment_scheduling_system;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;
 
 /**
 * Patient class storing their ID, name, DOB, and contact info
@@ -15,10 +15,10 @@ public class Patient {
     // for now we will use the classic 900 number that nmt uses - Rheggeth
     private long patientId = 900000000;
     private String name;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private String contactInfo;
 
-    public Patient(String name, LocalDate dateOfBirth, String contactInfo) {
+    public Patient(String name, String dateOfBirth, String contactInfo) {
         numPatients++;
         // Validation
         if (name == null || name.isEmpty()) throw new IllegalArgumentException("Name cannot be empty.");
@@ -31,14 +31,14 @@ public class Patient {
     }
 
     // Getters and Setters
-    public String getPatientId() { return patientId; }
+    public long getPatientId() { return patientId; }
     // No setter for patient ID - Rheggeth
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
-    public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+    public String getDateOfBirth() { return dateOfBirth; }
+    public void setDateOfBirth(String dob) { dateOfBirth = dob; }
 
     public String getContactInfo() { return contactInfo; }
     public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }

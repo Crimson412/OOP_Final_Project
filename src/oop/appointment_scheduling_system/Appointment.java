@@ -39,7 +39,7 @@ public class Appointment
 
         validatePatient(patient);
         validateProvider(provider);
-        validateTimes(startDateTime, endDateTime);
+        validateTimes(start, end);
         //validateStatus(status); -dont need to input status, appointment is SCHEDULED if no errors occur
         //validateReason(reason); -RG
 
@@ -52,7 +52,7 @@ public class Appointment
     }
 
     // Getters and Setters -Rheggeth
-    public int getAppointmentId() { return appointmentId; }
+    public long getAppointmentId() { return appointmentId; }
 
     public Patient getPatient() { return patient; }
 
@@ -119,15 +119,9 @@ public class Appointment
      */
     @Override
     public String toString() {
-        return "Appointment{"
-                + "appointmentId=" + appointmentId
-                + ", patient=" + patient
-                + ", provider=" + provider
-                + ", startDateTime=" + startDateTime
-                + ", endDateTime=" + endDateTime
-                + ", status=" + status
-                + ", reason='" + reason + '\''
-                + '}';
+        return "Appointment{appointmentId=" + appointmentId + ", patient=" + patient.getName() + ", provider=" 
+                + provider.getName() + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime 
+                + ", status=" + status + ", reason='" + reason + "'}";
     }
 
     //The following are validations 

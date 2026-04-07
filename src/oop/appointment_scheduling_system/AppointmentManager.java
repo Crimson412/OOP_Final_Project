@@ -17,13 +17,8 @@ public class AppointmentManager {
 
     // create our three array list instance variables
     ArrayList<Appointment> appoints  = new ArrayList<>();
-    ArrayList<Appointment> patients  = new ArrayList<>();
-    ArrayList<Appointment> providers = new ArrayList<>();
-
-    // create our scanner object
-    // idk if creating this globally is good or bad
-    private Scanner in = new Scanner(System.in);
-
+    ArrayList<Patient> patients  = new ArrayList<>();
+    ArrayList<Provider> providers = new ArrayList<>();
 
     /**
     * Creates and adds a patient to our patient array list variable
@@ -51,17 +46,12 @@ public class AppointmentManager {
 
         // create the patient
         Patient newPatient = new Patient(name, dob, contact);
-        System.out.println("Patient: " + newPatient.getId() + " has been added");
+        System.out.println("Patient: " + newPatient.getPatientId() + " has been added");
 
         // for now we will just add this patient to our patients array list
         patients.add(newPatient);
         // we will also return the newPatient for convenience in our other methods
         return newPatient;
-    }
-
-    // might come in handy?
-    public void addPatient(Patient p){
-        patients.add(p)
     }
 
     /**
@@ -71,6 +61,9 @@ public class AppointmentManager {
     * @bugs None
     */
     public Provider addProvider(){
+        // create our scanner object
+        Scanner in = new Scanner(System.in);
+
         // get the name of the provider
         System.out.println("Enter the providers name:");
         String name = in.nextLine();
@@ -85,7 +78,7 @@ public class AppointmentManager {
 
         // create the provider
         Provider newProvider = new Provider(name, specialty, location);
-        System.out.println("Provider: " + newProvider.getId() + " has been added");
+        System.out.println("Provider: " + newProvider.getProviderId() + " has been added");
 
         // for now we will just add the provider to our providers array list
         providers.add(newProvider);
@@ -96,6 +89,7 @@ public class AppointmentManager {
     private Appointment scheduleAppointment(Patient patient, Provider provider, long start, long end, String reason){
         Appointment apt = new Appointment(patient, provider, start, end, reason);
         appoints.add(apt);
+        System.out.println("Appointment Scheduled!");
         return apt;
     }
 
@@ -108,6 +102,9 @@ public class AppointmentManager {
     * @bugs None
     */
     public Appointment scheduleAppointment(Patient patient, Provider provider){
+        // create our scanner object
+        Scanner in = new Scanner(System.in);
+
         // start and end times...
         // TODO: have some nice interface so users arent entering Unix Timestamps and then convert it after
 
@@ -119,7 +116,7 @@ public class AppointmentManager {
         long end = in.nextLong();
 
         // verifies provider doesnt overlap
-        ArrayList<Appointment> apts = getAppointmentByProvider(provider);
+        ArrayList<Appointment> apts = getAppointmentsByProvider(provider);
         long min, max;
         for (int i = 0; i < apts.size(); i++){
             min = (apts.get(i)).getStartDateTime();
@@ -131,6 +128,7 @@ public class AppointmentManager {
         }
 
         // Finally for the reason:
+        in.nextLine();
         System.out.println("Please enter a reason for the appointment");
         String reason = in.nextLine();
         
@@ -138,17 +136,24 @@ public class AppointmentManager {
     }
 
     // Update requirement
-    public void rescheduleAppointment(Appointment apt){
+    public Appointment rescheduleAppointment(Appointment apt){
         // this will just delete the old one and make a new appointment
-        patients.remove(apt);
-        scheduleAppointment(apt.getPatient(), apt.getProvider());
+        appoints.remove(apt);
+
+        // TODO this creates a new appointment ID. I'd imagine rescheduling an appointment
+        // should actually retain the ID i was just being lazy for now
+        
+        return scheduleAppointment(apt.getPatient(), apt.getProvider());
     }
 
     // Update requirement
     public void updateAppointmentStatus(Appointment apt){
+        // create our scanner object
+        Scanner in = new Scanner(System.in);
+
         while(true){
             System.out.println("Enter the appointment status: [S, C, X]");
-            char status = input.next().charAt(0);
+            char status = in.next().charAt(0);
             switch(status){
                 case 'S':
                     apt.updateStatus(AppointmentStatus.SCHEDULED);
@@ -171,7 +176,8 @@ public class AppointmentManager {
     // The next four return an array list of appointments by specific parameters
     // Falls under Read (Query) requirement
     
-    public void getAppointmentsByPatient(int id){
+    public void getAppointmentsByPatient(Patient p){
+        long id = p.getPatientId();
         Appointment apt;
         Patient patient;
         for (int i = 0; i < appoints.size(); i++){
@@ -179,12 +185,13 @@ public class AppointmentManager {
             patient = apt.getPatient();
 
             // for now we will just print the appointments that match
-            if (id.equals(patient.getId()))
+            if (id == patient.getPatientId())
                 System.out.println(apt);
         }
     }
 
-    public ArrayList<Appointment> getAppointmentsByProvider(int id){
+    public ArrayList<Appointment> getAppointmentsByProvider(Provider p){
+        long id = p.getProviderId();
         ArrayList<Appointment> aptByProvider = new ArrayList<>();
         Appointment apt;
         Provider provider;
@@ -193,7 +200,7 @@ public class AppointmentManager {
             provider = apt.getProvider();
 
             // for this we will print AND return the modified array (useful for our business stuff)
-            if (id.equals(provider.getId())){
+            if (id == provider.getProviderId()){
                 aptByProvider.add(apt);
                 System.out.println(apt);
             }
@@ -202,7 +209,7 @@ public class AppointmentManager {
     }
 
     // only appointments that start and end within the range given
-    public void getAppointmentByDateRange(long min, long max){
+    public void getAppointmentsByDateRange(long min, long max){
         Appointment apt;
         long start, end;
         for (int i = 0; i < appoints.size(); i++){
@@ -211,12 +218,12 @@ public class AppointmentManager {
             end = apt.getEndDateTime();
 
             // for now we will just print the appointments that match
-            if (min < start && end < max)
+            if (min <= start && end <= max)
                 System.out.println(apt);
         }
     }
 
-    public void getAppointmentByStatus(AppointmentStatus status){
+    public void getAppointmentsByStatus(AppointmentStatus status){
         Appointment apt;
         AppointmentStatus aptStatus;
         for (int i = 0; i < appoints.size(); i++){

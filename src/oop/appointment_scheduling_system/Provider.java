@@ -29,7 +29,7 @@ public class Provider {
     }
 
     // Getters and Setters
-    public String getProviderId() { return providerId; }
+    public long getProviderId() { return providerId; }
     // No setter for provider ID - Rheggeth
 
     public String getName() { return name; }
