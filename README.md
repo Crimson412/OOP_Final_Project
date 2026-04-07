@@ -26,3 +26,4 @@ example input I fed into the program, but for the life of me I can't figure
 out how to pipe that input into the program without using scanner on the 
 text file itself, so you will probably have to manually compile Test.java
 and manually input the contents of input.txt
+- Rheggeth
