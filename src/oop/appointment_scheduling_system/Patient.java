@@ -10,17 +10,21 @@ import java.time.LocalDate;
 * @bugs None
 */
 public class Patient {
-    private String patientId;
+    private static int numPatients = 0;
+    // ideally this is set to a length that will accomidate all patients for appearance purposes
+    // for now we will use the classic 900 number that nmt uses - Rheggeth
+    private long patientId = 900000000;
     private String name;
     private LocalDate dateOfBirth;
     private String contactInfo;
 
-    public Patient(String patientId, String name, LocalDate dateOfBirth, String contactInfo) {
+    public Patient(String name, LocalDate dateOfBirth, String contactInfo) {
+        numPatients++;
         // Validation
-        if (patientId == null || patientId.isEmpty()) throw new IllegalArgumentException("Patient ID cannot be empty.");
         if (name == null || name.isEmpty()) throw new IllegalArgumentException("Name cannot be empty.");
 
-        this.patientId = patientId;
+        // Then we create a unique ID by adding the total number of patients to the default ID - Rheggeth
+        patientId += numPatients;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.contactInfo = contactInfo;
@@ -28,7 +32,7 @@ public class Patient {
 
     // Getters and Setters
     public String getPatientId() { return patientId; }
-    public void setPatientId(String patientId) { this.patientId = patientId; }
+    // No setter for patient ID - Rheggeth
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -41,6 +45,6 @@ public class Patient {
 
     @Override
     public String toString() {
-        return String.format("Patient [ID: %s, Name: %s, DOB: %s]", patientId, name, dateOfBirth);
+        return String.format("Patient [ID: %d, Name: %s, DOB: %s]", patientId, name, dateOfBirth);
     }
 }
