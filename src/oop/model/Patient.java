@@ -1,14 +1,14 @@
-package oop.appointment_scheduling_system;
+package oop.model;
 
 //import java.time.LocalDate;
 
 /**
-* Patient class storing their ID, name, DOB, and contact info
-*
-* @author Noah W.
-* @version Final Project, Scheduling System
-* @bugs None
-*/
+ * Patient class storing their ID, name, DOB, and contact info.
+ *
+ * @author Noah W.
+ * @version Final Project, model
+ * @bugs None
+ */
 public class Patient {
     private static int numPatients = 0;
     // ideally this is set to a length that will accomidate all patients for appearance purposes
@@ -18,6 +18,14 @@ public class Patient {
     private String dateOfBirth;
     private String contactInfo;
 
+
+    /**
+     * Default constructor that creates a patient with all variables provided.
+     *
+     * @param name String of the patients name
+     * @param dateOfBirth String for the patients birth date
+     * @param contactInfo String for the patients contact info
+     */
     public Patient(String name, String dateOfBirth, String contactInfo) {
         numPatients++;
         // Validation
@@ -30,19 +38,26 @@ public class Patient {
         this.contactInfo = contactInfo;
     }
 
-    // Getters and Setters
+    // Getters and Setters.
+
     public long getPatientId() { return patientId; }
-    // No setter for patient ID - Rheggeth
 
     public String getName() { return name; }
+
     public void setName(String name) { this.name = name; }
 
     public String getDateOfBirth() { return dateOfBirth; }
+
     public void setDateOfBirth(String dob) { dateOfBirth = dob; }
 
     public String getContactInfo() { return contactInfo; }
+
     public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
 
+    /**
+     * Returns a string representation of this patient.
+     * @return a string describing this patient
+     */
     @Override
     public String toString() {
         return String.format("Patient [ID: %d, Name: %s, DOB: %s]", patientId, name, dateOfBirth);

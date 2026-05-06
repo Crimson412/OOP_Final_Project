@@ -1,32 +1,29 @@
-package oop.appointment_scheduling_system;
+package oop.service;
 
-// we will use this for storing a list of appointments, patients and providers
-// which can be thought of as everything in record
+import oop.model.*;
+
 import java.util.ArrayList;
-// scanner imported so that input validation can be implemented here and not in main
 import java.util.Scanner;
 
 /**
-* Appointment manager class that handles appointments, patients, and providers using the busidness rules
-*
-* @author Rheggeth M.
-* @version Final Project, Scheduling System
-* @bugs None
-*/
+ * Appointment manager class that handles appointments, patients, and providers using the busidness rules.
+ *
+ * @author Rheggeth M.
+ * @version Final Project, service.
+ * @bugs None
+ */
 public class AppointmentManager {
-
-    // create our three array list instance variables
-    ArrayList<Appointment> appoints  = new ArrayList<>();
-    ArrayList<Patient> patients  = new ArrayList<>();
-    ArrayList<Provider> providers = new ArrayList<>();
+    private ArrayList<Appointment> appoints  = new ArrayList<>();
+    private ArrayList<Patient> patients  = new ArrayList<>();
+    private ArrayList<Provider> providers = new ArrayList<>();
 
     /**
-    * Creates and adds a patient to our patient array list variable
-    *
-    * @return returns the patient created
-    * @bugs None
-    */
-    public Patient addPatient(){
+     * Creates and adds a patient to our patient array list variable.
+     *
+     * @return returns the patient created
+     * @bugs None
+     */
+    public Patient addPatient() {
         // create our scanner object
         Scanner in = new Scanner(System.in);
 
@@ -55,12 +52,12 @@ public class AppointmentManager {
     }
 
     /**
-    * Creates and adds a provider to our provider array list variable
-    *
-    * @return returns the provider created
-    * @bugs None
-    */
-    public Provider addProvider(){
+     * Creates and adds a provider to our provider array list variable.
+     *
+     * @return returns the provider created
+     * @bugs None
+     */
+    public Provider addProvider() {
         // create our scanner object
         Scanner in = new Scanner(System.in);
 
@@ -95,13 +92,14 @@ public class AppointmentManager {
 
 
     /**
-    * Schedules an appointment, adds it to the appointments array list, and returns it
-    *
-    * @param Takes in the Patient and Provider
-    * @return Returns the created appointment
-    * @bugs None
-    */
-    public Appointment scheduleAppointment(Patient patient, Provider provider){
+     * Schedules an appointment, adds it to the appointments array list, and returns it.
+     *
+     * @param patient Patient object for the patient this appointment is for
+     * @param provider Provider object for the provider of this appointment
+     * @return Appointment object of the created appointment, null on failure to create appointment
+     * @bugs None
+     */
+    public Appointment scheduleAppointment(Patient patient, Provider provider) {
         // create our scanner object
         Scanner in = new Scanner(System.in);
 
@@ -136,7 +134,7 @@ public class AppointmentManager {
     }
 
     // Update requirement
-    public Appointment rescheduleAppointment(Appointment apt){
+    public Appointment rescheduleAppointment(Appointment apt) {
         // this will just delete the old one and make a new appointment
         appoints.remove(apt);
 
