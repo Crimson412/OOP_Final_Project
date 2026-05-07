@@ -75,6 +75,7 @@ public class Appointment {
 
     /**
      * Returns a string representation of this appointment.
+     *
      * @return a string describing this appointment
      */
     @Override

@@ -50,6 +50,11 @@ public class AppointmentManager {
         System.out.println("Created: " + newPatient);
     }
 
+    /**
+     * Method that attempts to get a valid patient using patientID input.
+     *
+     * @return Patient object that is null if no patient found, or the patient on success
+     */
     public Patient getPatient() {
         Scanner in = new Scanner(System.in);
         int patientID;
@@ -88,14 +93,14 @@ public class AppointmentManager {
         while (true) {
             System.out.print("Enter the providers specialty: ");
             specialty = in.nextLine();
-            if (Objects.isNull(specialty) || specialty.trim().isEmpty()) System.out.println("Patient specialty cannot be empty!");
+            if (Objects.isNull(specialty) || specialty.trim().isEmpty()) System.out.println("Provider specialty cannot be empty!");
             else break;
         }
         // get the location
         while (true) {
             System.out.print("Enter the providers location: ");
             location = in.nextLine();
-            if (Objects.isNull(location) || location.trim().isEmpty()) System.out.println("Patient location cannot be empty!");
+            if (Objects.isNull(location) || location.trim().isEmpty()) System.out.println("Provider location cannot be empty!");
             else break;
         }
 
@@ -105,6 +110,11 @@ public class AppointmentManager {
         System.out.println("Created " + newProvider);
     }
 
+    /**
+     * Method that attempts to get a provider given the providerID.
+     *
+     * return Provider object if provider found, null otherwise
+     */
     public Provider getProvider() {
         Scanner in = new Scanner(System.in);
         int providerID;
@@ -125,8 +135,18 @@ public class AppointmentManager {
         return null;
     }
 
+    /**
+     * Method which enforces the business rule that a provider cannot have two appointments at the same time.
+     *
+     * @param provider the provider which the business rule is being checked for
+     * @param start the proposed start time for this providers appointment
+     * @param end the proposed end time for this providers appointment
+     * @param apt null if the appointment is being shceduled, else its the appointment being rescheduled
+     * @return boolean, true if the appointment can be made/rescheduled, false otherwise
+     */
     public boolean verifyProviderAppointments(Provider provider, long start, long end, Appointment apt) {
         ArrayList<Appointment> apts = getAppointmentsByProvider(provider);
+        // ensure that rescheduling an appointment doesn't account for the initial appointment
         apts.remove(apt);
         for (int i = 0; i < apts.size(); i++) {
             long min = (apts.get(i)).getStartDateTime();
@@ -139,6 +159,11 @@ public class AppointmentManager {
         return true;
     }
 
+    /**
+     * Method which gives a valid date range from user input following the business logic.
+     *
+     * @return long[] array with 2 entries, the first is the start time, and the second is the end
+     */
     public long[] getDateRange() {
         Scanner in = new Scanner(System.in);
         long start, end;
@@ -163,11 +188,17 @@ public class AppointmentManager {
                     in.next();
                 }
             }
+            // business rule, end time should not occur before or at the start time
             if (end <= start) System.out.println("Start must occur before end time!");
             else return new long[] {start, end};
         }
     }
 
+    /**
+     * Method which gets a valid appointment status from user input.
+     *
+     * @return AppointmentStatus enum of any of its three types
+     */
     public AppointmentStatus getAppointmentStatus() {
         Scanner in = new Scanner(System.in);
  
@@ -188,14 +219,15 @@ public class AppointmentManager {
         }
     }
 
-
     /**
-     * Schedules an appointment, adds it to the appointments array list, and returns it.
-     *
-     * @param patient Patient object for the patient this appointment is for
-     * @param provider Provider object for the provider of this appointment
-     * @return Appointment object of the created appointment, null on failure to create appointment
-     * @bugs None
+     * Schedules an appointment if good data achieved then adds it to the appointments array list.
+     * <p>
+     * This enforces the business rule that an appointment cannot be created without a patient
+     * and provider being created first. If either getPatient() or getProvider() returns a null
+     * value this method will simply return. Otherwise, it then gets a valid date range enforced
+     * by getDateRange() and then verifies our provider overlap business rule. If all these rules
+     * pass, then the reasong is inputted and the appointment is created.
+     * </p>
      */
     public void scheduleAppointment() {
         Scanner in = new Scanner(System.in);
@@ -220,6 +252,11 @@ public class AppointmentManager {
         System.out.println("Created " + newApt);
     }
 
+    /**
+     * Method which attempts to get a valid appointment from user input for appointmentID.
+     *
+     * @return Appointment if valid appointment found, else returns null.
+     */
     public Appointment getAppointment() {
         Scanner in = new Scanner(System.in);
         long appointmentID;
@@ -237,7 +274,9 @@ public class AppointmentManager {
         return null;
     }
 
-    // Update requirement
+    /**
+     * Attempts to reschedule an appointment time from getAppointment() and checks provider business rule.
+     */
     public void rescheduleAppointment() {
         Scanner in = new Scanner(System.in);
         Appointment apt = getAppointment();
@@ -245,13 +284,16 @@ public class AppointmentManager {
 
         long[] dateRange = getDateRange();
 
+        // Ensure the reschedule still holds the provider business rule
         if (!verifyProviderAppointments(apt.getProvider(), dateRange[0], dateRange[1], apt)) return;
 
         apt.reschedule(dateRange[0], dateRange[1]);
         System.out.println("Reschedule successful! " + apt);
     }
 
-    // Update requirement
+    /**
+     * Method which updates an inputted apointments status, returns early if no appointment found.
+     */
     public void updateAppointmentStatus() {
         Appointment apt = getAppointment();
         if (apt == null) return;
@@ -262,7 +304,9 @@ public class AppointmentManager {
     }
 
 
-    
+    /**
+     * Method which prints a list of appointments filted by a given patient returns early if invalid patient.
+     */
     public void getAppointmentsByPatient() {
         Patient p = getPatient();
 
@@ -279,6 +323,12 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Overloaded method which returns an ArrayList of appointments by a specific provider (used to enforce provider rule).
+     *
+     * @param p Provider instance which is the provider to filter by
+     * @return ArrayList<Appointment> list of all the appointments with this provider
+     */
     public ArrayList<Appointment> getAppointmentsByProvider(Provider p) {
         long id = p.getProviderID();
         ArrayList<Appointment> aptByProvider = new ArrayList<>();
@@ -292,6 +342,9 @@ public class AppointmentManager {
         return aptByProvider;
     }
 
+    /**
+     * Overloaded methid which prints appointments by a provider, returns early if invalid provider.
+     */
     public void getAppointmentsByProvider() {
         Provider p = getProvider();
         if (p == null) return;
@@ -305,7 +358,9 @@ public class AppointmentManager {
         }
     }
 
-    // only appointments that start and end within the range given
+    /**
+     * Method which prints appointments WITHIN a given time frame (not overlapping).
+     */
     public void getAppointmentsByDateRange() {
         long[] dateRange = getDateRange();
         Appointment apt;
@@ -319,6 +374,9 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     *  Method that prints all appointments with a given status.
+     */
     public void getAppointmentsByStatus() {
         AppointmentStatus status = getAppointmentStatus();
         Appointment apt;
@@ -330,18 +388,30 @@ public class AppointmentManager {
         }
     }
 
+    /**
+     * Method that prints all the Patient objects in patients ArrayList.
+     */
     public void listPatients() { 
         for (int i = 0; i < patients.size(); i++) System.out.println(patients.get(i));
     }
 
+    /**
+     * Method that prints all the Provider objects in providers ArrayList.
+     */
     public void listProviders() { 
         for (int i = 0; i < providers.size(); i++) System.out.println(providers.get(i));
     }
 
+    /**
+     * Method that prints all the Appointment objects in appoints ArrayList.
+     */
     public void listAppointments() { 
         for (int i = 0; i < appoints.size(); i++) System.out.println(appoints.get(i));
     }
 
+    /**
+     * Method that deletes a patient, returns early if invalid patient entered.
+     */
     public void deletePatient() {
         Patient patient = getPatient();
         if (patient == null) return;
@@ -350,6 +420,9 @@ public class AppointmentManager {
         System.out.println("Removed: " + patient);
     }
 
+    /**
+     * Method that deletes a provider, returns early if invalid provider entered.
+     */
     public void deleteProvider() {
         Provider provider = getProvider();
         if (provider == null) return;
@@ -357,4 +430,6 @@ public class AppointmentManager {
         providers.remove(provider);
         System.out.println("Removed: " + provider);
     }
+
+    // There is no delete Appointment as we figured these should stay for record purposes.
 }
