@@ -1,7 +1,5 @@
 package oop.model;
 
-//import java.time.LocalDate;
-
 /**
  * Patient class storing their ID, name, DOB, and contact info.
  *
@@ -11,8 +9,6 @@ package oop.model;
  */
 public class Patient {
     private static int numPatients = 0;
-    // ideally this is set to a length that will accomidate all patients for appearance purposes
-    // for now we will use the classic 900 number that nmt uses - Rheggeth
     private long patientID = 900000000;
     private String name;
     private String dateOfBirth;
@@ -28,8 +24,6 @@ public class Patient {
      */
     public Patient(String name, String dateOfBirth, String contactInfo) {
         numPatients++;
-        // Validation
-        if (name == null || name.isEmpty()) throw new IllegalArgumentException("Name cannot be empty.");
 
         // Then we create a unique ID by adding the total number of patients to the default ID - Rheggeth
         patientID += numPatients;
@@ -56,6 +50,7 @@ public class Patient {
 
     /**
      * Returns a string representation of this patient.
+     *
      * @return a string describing this patient
      */
     @Override

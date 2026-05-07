@@ -1,7 +1,5 @@
 package oop.model;
 
-import java.util.Objects;
-
 /**
  * An appointment containing all the necessary information between patient and provider.
  *
@@ -20,14 +18,12 @@ public class Appointment {
     private String reason;
 
     /**
-     * Creates a new Appointment.
+     * Creates a new Appointment, the status for a new appointment is always SCHEDULED.
      *
-     * @param appointmentId the appointment ID
      * @param patient the patient for this appointment
      * @param provider the provider for this appointment
-     * @param startDateTime the appointment start time 
-     * @param endDateTime the appointment end time 
-     * @param status the appointment status
+     * @param start the appointment start time 
+     * @param end the appointment end time 
      * @param reason the reason for the visit
      */
     public Appointment(Patient patient, Provider provider, long start, long end, String reason) {
@@ -41,38 +37,25 @@ public class Appointment {
         this.reason = reason;
     }
 
-    // Getters and Setters.
+    // Getters.
 
     public long getAppointmentID() { return appointmentID; }
 
     public Patient getPatient() { return patient; }
 
-    // might remove this
-    public void setPatient(Patient patient) { this.patient = patient; }
-
     public Provider getProvider() { return provider; }
-
-    // might remove this
-    public void setProvider(Provider provider) { this.provider = provider; }
 
     public long getStartDateTime() { return startDateTime; }
 
-    // might remove this
-    public void setStartDateTime(long startDateTime) { this.startDateTime = startDateTime; }
-
     public long getEndDateTime() { return endDateTime; }
-
-    // might remove this
-    public void setEndDateTime(long endDateTime) { this.endDateTime = endDateTime; }
 
     public AppointmentStatus getStatus() { return status; }
 
     public String getReason() { return reason; }
 
-    public void setReason(String reason) { this.reason = reason; }
-
     /**
      * Updates the status of this appointment.
+     *
      * @param newStatus the new appointment status
      */
     public void updateStatus(AppointmentStatus newStatus) {
@@ -80,7 +63,8 @@ public class Appointment {
     }
 
     /**
-     * Reschedules this appointment to a new time.
+     * Reschedules this appointment to a new time with inputs already checked.
+     *
      * @param newStartDateTime the new start time
      * @param newEndDateTime the new end time
      */

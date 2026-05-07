@@ -41,7 +41,7 @@ public class Main {
                 case 'C':
                     // create
                     while (loop) {
-                        System.out.print("What would you like to create:\n1. Patient\n2. Provider\n3. Appointment\n4. Exit create menu\n> ");
+                        System.out.print("\nWhat would you like to create:\n1. Patient\n2. Provider\n3. Appointment\n4. Exit create menu\n> ");
                         input = in.next().charAt(0);
                         switch (input) {
                             case '1':
@@ -54,23 +54,7 @@ public class Main {
                                 break;
                             case '3':
                                 // create Appointment
-                                System.out.print("Enter the patients ID number: ");
-                                if (in.hasNextInt()) pat = manager.getPatient(in.nextInt());
-                                else {
-                                    System.out.println("Patient IDs are a 900 number!\n");
-                                    in.next();
-                                    break;
-                                }
-                                System.out.print("Enter the providers ID number: ");
-                                if (in.hasNextInt()) pro = manager.getProvider(in.nextInt());
-                                else { 
-                                    System.out.println("Provider IDs are an 800 number!\n");
-                                    in.next();
-                                    break;
-                                }
-                                // create appointment if valid patient and providers are returned
-                                if (pat != null && pro != null) manager.scheduleAppointment(pat, pro);
-                                else System.out.println("Invalid Patient/Provider ID entered!\n");
+                                manager.scheduleAppointment();
                                 break;
                             case '4':
                                 // go back a step
@@ -78,61 +62,78 @@ public class Main {
                                 loop = false;
                                 break;
                             default:
-                                System.out.println("Please only enter one of the numbers 1, 2, 3, or 4\n");
+                                System.out.println("Please only enter one of the numbers 1, 2, 3, or 4");
                         }
                     }
                     break;
                 case 'R':
                     // read
                     while (loop) {
-                        System.out.print("What would you like to sort by:\n1. List Appointments by Patient\n2. List Appointments by Provider" +
-                                "\n3. List Appointment by date range\n4. List Appointment by status\n5. Exit read menu\n> ");
+                        System.out.print("\nWhat would you like to sort by:\n1. List all Patients\n2. List all Providers\n" +
+                            "3. List all Appointments\n4. List Appointments by Patient\n5. List Appointments by Provider\n" +
+                            "6. List Appointment by date range\n7. List Appointment by status\n8. Exit read menu\n> ");
                         input = in.next().charAt(0);
-                        loop = false;
                         switch (input) {
                             case '1':
-                                // list appointments by patient
+                                // list all patients
+                                manager.listPatients();
                                 break;
                             case '2':
-                                // list appointments by provider
+                                // list all providers
+                                manager.listProviders();
                                 break;
                             case '3':
-                                // list appointments by date range
+                                // list all appointments
+                                manager.listAppointments();
                                 break;
                             case '4':
-                                // list appointments by status
+                                // list appointments by patient
+                                manager.getAppointmentsByPatient();
                                 break;
                             case '5':
+                                // list appointments by provider
+                                manager.getAppointmentsByProvider();
+                                break;
+                            case '6':
+                                // list appointments by date range
+                                manager.getAppointmentsByDateRange();
+                                break;
+                            case '7':
+                                // list appointments by status
+                                manager.getAppointmentsByStatus();
+                                break;
+                            case '8':
                                 // go back a step
                                 System.out.println("Leaving read menu...");
+                                loop = false;
                                 break;
                             default:
-                                System.out.println("Please only enter one of the numbers 1-5");
-                                loop = true;
+                                System.out.println("Please only enter one of the numbers 1-8");
                         }
                     }
                     break;
                 case 'U':
                     // update
                     while (loop) {
-                        System.out.print("What would you like to update:\n1. Reschedule an Appointment\n2. Update an Appointment Status" +
+                        System.out.print("\nWhat would you like to update:\n1. Reschedule an Appointment\n2. Update an Appointment Status" +
                             "\n3. Exit update menu\n> ");
                         input = in.next().charAt(0);
-                        loop = false;
                         switch (input) {
                             case '1':
                                 // reschedule appointment
+                                manager.rescheduleAppointment();
                                 break;
                             case '2':
-                                // update appointment status 
+                                // update appointment status
+                                manager.updateAppointmentStatus();
                                 break;
                             case '3':
                                 // go back a step
                                 System.out.println("Leaving update menu...");
+                                loop = false;
                                 break;
                             default:
                                 System.out.println("Please only enter one of the numbers 1, 2, or 3");
-                                loop = true;
                         }
                     }
                     break;
@@ -141,21 +142,22 @@ public class Main {
                     while (loop) {
                         System.out.print("What would you like to delete:\n1. Patient\n2. Provider\n3. Exit delete menu\n> ");
                         input = in.next().charAt(0);
-                        loop = false;
                         switch (input) {
                             case '1':
                                 // delete patient
+                                manager.deletePatient();
                                 break;
                             case '2':
                                 // delete provider
+                                manager.deleteProvider();
                                 break;
                             case '3':
                                 // go back a step
                                 System.out.println("Leaving delete menu...");
+                                loop = false;
                                 break;
                             default:
                                 System.out.println("Please only enter one of the numbers 1, 2, or 3");
-                                loop = true;
                         }
                     }
                     break;

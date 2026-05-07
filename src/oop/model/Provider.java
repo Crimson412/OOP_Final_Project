@@ -9,8 +9,6 @@ package oop.model;
  */
 public class Provider {
     private static int numProviders = 0;
-    // ideally this is set to a length that will accomidate all providers for appearance purposes
-    // for now we will use a 800 number similar to the one nmt uses - Rheggeth
     private long providerID = 800000000;
     private String name;
     private String specialty;
@@ -25,8 +23,6 @@ public class Provider {
      */
     public Provider(String name, String specialty, String location) {
         numProviders++;
-        // Validation
-        if (name == null || name.isEmpty()) throw new IllegalArgumentException("Provider name cannot be empty.");
 
         // Then we create a unique ID by adding the total number of providers to the default ID - Rheggeth
         providerID += numProviders;
@@ -53,6 +49,7 @@ public class Provider {
 
     /**
      * Returns a string representation of this provider.
+     *
      * @return a string describing this provider
      */
     @Override    
