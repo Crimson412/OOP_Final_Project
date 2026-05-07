@@ -47,7 +47,7 @@ public class AppointmentManager {
         // create the patient
         Patient newPatient = new Patient(name, dob, contact);
         patients.add(newPatient);
-        System.out.println("Created: " + newPatient);
+        System.out.println("Created: " + newPatient + "\n");
     }
 
     public Patient getPatient(int patientID) {
@@ -88,21 +88,13 @@ public class AppointmentManager {
         // create the provider
         Provider newProvider = new Provider(name, specialty, location);
         providers.add(newProvider);
-        System.out.println("Created " + newProvider);
+        System.out.println("Created " + newProvider + "\n");
     }
 
     public Provider getProvider(int providerID) {
         for (int i = 0; i < providers.size(); i++) 
             if (providers.get(i).getProviderID() == providerID) return providers.get(i);
         return null;
-    }
-
-
-    private Appointment scheduleAppointment(Patient patient, Provider provider, long start, long end, String reason){
-        Appointment apt = new Appointment(patient, provider, start, end, reason);
-        appoints.add(apt);
-        System.out.println("Appointment Scheduled!");
-        return apt;
     }
 
     /**
@@ -114,26 +106,25 @@ public class AppointmentManager {
      * @bugs None
      */
     public boolean scheduleAppointment(Patient patient, Provider provider) {
-        // create our scanner object
         Scanner in = new Scanner(System.in);
+        long start, end, min, max;
 
         // start and end times...
         // TODO: have some nice interface so users arent entering Unix Timestamps and then convert it after
 
         // For now thou... send in the timestamps!
-        System.out.println("Please enter the start time:");
+        System.out.print("Please enter the start time: ");
         // prob should be a long so our program doesnt break in 2038
-        long start = in.nextLong();
-        System.out.println("Please enter the end time:");
-        long end = in.nextLong();
+        start = in.nextLong();
+        System.out.print("Please enter the end time: ");
+        end = in.nextLong();
 
         // verifies provider doesnt overlap
         ArrayList<Appointment> apts = getAppointmentsByProvider(provider);
-        long min, max;
         for (int i = 0; i < apts.size(); i++){
             min = (apts.get(i)).getStartDateTime();
             max = (apts.get(i)).getEndDateTime();
-            if ((min < start && start < max) || (min < end && end < max)){ //invalid
+            if ((min < start && start < max) || (min < end && end < max)) {
                 System.out.println("This provder is already scheduled for this time...");
                 return false;
             }
@@ -141,11 +132,13 @@ public class AppointmentManager {
 
         // Finally for the reason:
         in.nextLine();
-        System.out.println("Please enter a reason for the appointment");
+        System.out.print("Please enter a reason: ");
         String reason = in.nextLine();
-        
-        // FIX THIIIIS LATERRR
-        scheduleAppointment(patient, provider, start, end, reason);
+
+        // Create and add appointment
+        Appointment newApt = new Appointment(patient, provider, start, end, reason);
+        appoints.add(newApt);
+        System.out.println("Created " + newApt + "\n");
         return true;
     }
 

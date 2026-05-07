@@ -60,6 +60,6 @@ public class Patient {
      */
     @Override
     public String toString() {
-        return String.format("Patient [ID: %d, Name: %s, DOB: %s]", patientID, name, dateOfBirth);
+        return String.format("Patient [ID: %d, Name: %s, DOB: %s, Contact: %s]", patientID, name, dateOfBirth, contactInfo);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class Appointment {
     private static int numAppointments = 0;
-    private long appointmentId = 700000000;
+    private long appointmentID = 700000000;
     private Patient patient;
     private Provider provider;
     private long startDateTime;
@@ -32,7 +32,7 @@ public class Appointment {
      */
     public Appointment(Patient patient, Provider provider, long start, long end, String reason) {
         numAppointments++;
-        appointmentId += numAppointments;
+        appointmentID += numAppointments;
         this.patient = patient;
         this.provider = provider;
         startDateTime = start;
@@ -43,7 +43,7 @@ public class Appointment {
 
     // Getters and Setters.
 
-    public long getAppointmentId() { return appointmentId; }
+    public long getAppointmentID() { return appointmentID; }
 
     public Patient getPatient() { return patient; }
 
@@ -95,8 +95,8 @@ public class Appointment {
      */
     @Override
     public String toString() {
-        return "Appointment{appointmentId=" + appointmentId + ", patient=" + patient.getName() + ", provider=" 
-                + provider.getName() + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime 
-                + ", status=" + status + ", reason='" + reason + "'}";
+        return "Appointment [ID: " + appointmentID + ", Patient: " + patient.getName() + ", Provider: " 
+                + provider.getName() + ", Start: " + startDateTime + ", End: " + endDateTime 
+                + ", Status: " + status + ", Reason: " + reason + "]";
     }
 }

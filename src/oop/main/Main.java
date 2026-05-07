@@ -35,6 +35,7 @@ public class Main {
         while (input != 'Q') {
             System.out.print("\nWhich action would you like to perform?\nCreate, Read, Update, or Delete [C, R, U, D, or Q to Quit]\n> ");
             input = in.next().charAt(0);
+            input = Character.toUpperCase(input);
             loop = true;
             switch (input) {
                 case 'C':
@@ -42,7 +43,6 @@ public class Main {
                     while (loop) {
                         System.out.print("What would you like to create:\n1. Patient\n2. Provider\n3. Appointment\n4. Exit create menu\n> ");
                         input = in.next().charAt(0);
-                        loop = false;
                         switch (input) {
                             case '1':
                                 // create Patient
@@ -56,20 +56,29 @@ public class Main {
                                 // create Appointment
                                 System.out.print("Enter the patients ID number: ");
                                 if (in.hasNextInt()) pat = manager.getPatient(in.nextInt());
-                                else break;
+                                else {
+                                    System.out.println("Patient IDs are a 900 number!\n");
+                                    in.next();
+                                    break;
+                                }
                                 System.out.print("Enter the providers ID number: ");
                                 if (in.hasNextInt()) pro = manager.getProvider(in.nextInt());
-                                else break;
+                                else { 
+                                    System.out.println("Provider IDs are an 800 number!\n");
+                                    in.next();
+                                    break;
+                                }
                                 // create appointment if valid patient and providers are returned
                                 if (pat != null && pro != null) manager.scheduleAppointment(pat, pro);
+                                else System.out.println("Invalid Patient/Provider ID entered!\n");
                                 break;
                             case '4':
                                 // go back a step
                                 System.out.println("Leaving creation menu...");
+                                loop = false;
                                 break;
                             default:
-                                System.out.println("Please only enter one of the numbers 1, 2, 3, or 4");
-                                loop = true;
+                                System.out.println("Please only enter one of the numbers 1, 2, 3, or 4\n");
                         }
                     }
                     break;
