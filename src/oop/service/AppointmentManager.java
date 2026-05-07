@@ -4,6 +4,7 @@ import oop.model.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Objects;
 
 /**
  * Appointment manager class that handles appointments, patients, and providers using the busidness rules.
@@ -18,70 +19,84 @@ public class AppointmentManager {
     private ArrayList<Provider> providers = new ArrayList<>();
 
     /**
-     * Creates and adds a patient to our patient array list variable.
-     *
-     * @return returns the patient created
-     * @bugs None
+     * Creates and adds a patient to our patient array list variable, only letting valid input through.
      */
-    public Patient addPatient() {
-        // create our scanner object
+    public void addPatient() {
         Scanner in = new Scanner(System.in);
+        String name, dob, contact;
 
         // get the name
-        System.out.println("Enter the patients name:");
-        String name = in.nextLine();
-
+        while (true) {
+            System.out.println("Enter the patients name:");
+            name = in.nextLine();
+            if (Objects.isNull(name) || name.trim().isEmpty()) System.out.println("Patient name cannot be empty!");
+            else break;
+        }
         // get date of birth
-        // TODO: update this to a localDate object when we implement a GUI to enter it
-        System.out.println("Enter the patients DOB:");
-        String dob = in.nextLine();
-
-        // finally get contact info
-        // I'd imagine a patient could leave this blank
+        // TODO: could eventaully be updated to a local date object
+        while (true) {
+            System.out.println("Enter the patients DOB:");
+            dob = in.nextLine();
+            if (Objects.isNull(dob) || dob.trim().isEmpty()) System.out.println("DOB cannot be empty!");
+            else break;
+        }
+        // get contact info (this can be empty)
         System.out.println("Enter any contact information:");
-        String contact = in.nextLine();
+        contact = in.nextLine();
 
         // create the patient
         Patient newPatient = new Patient(name, dob, contact);
-        System.out.println("Patient: " + newPatient.getPatientId() + " has been added");
-
-        // for now we will just add this patient to our patients array list
         patients.add(newPatient);
-        // we will also return the newPatient for convenience in our other methods
-        return newPatient;
+        System.out.println("Created: " + newPatient);
+    }
+
+    public Patient getPatient(int patientID) {
+        for (int i = 0; i < patients.size(); i++) 
+            if (patients.get(i).getPatientID() == patientID) return patients.get(i);
+        return null;
     }
 
     /**
-     * Creates and adds a provider to our provider array list variable.
-     *
-     * @return returns the provider created
-     * @bugs None
+     * Creates and adds a provider to our provider array list variable, only letting valid input through.
      */
-    public Provider addProvider() {
-        // create our scanner object
+    public void addProvider() {
         Scanner in = new Scanner(System.in);
+        String name, specialty, location;
 
-        // get the name of the provider
-        System.out.println("Enter the providers name:");
-        String name = in.nextLine();
-
-        // get specialty of provider
-        System.out.println("Enter the providers specialty:");
-        String specialty = in.nextLine();
-
-        // finally get their location
-        System.out.println("Enter the providers location:");
-        String location = in.nextLine();
+        // get the name
+        while (true) {
+            System.out.println("Enter the providers name:");
+            name = in.nextLine();
+            if (Objects.isNull(name) || name.trim().isEmpty()) System.out.println("Providers name cannot be empty!");
+            else break;
+        }
+        // get the specialty
+        while (true) {
+            System.out.println("Enter the providers specialty:");
+            specialty = in.nextLine();
+            if (Objects.isNull(specialty) || specialty.trim().isEmpty()) System.out.println("Patient specialty cannot be empty!");
+            else break;
+        }
+        // get the location
+        while (true) {
+            System.out.println("Enter the providers location:");
+            location = in.nextLine();
+            if (Objects.isNull(location) || location.trim().isEmpty()) System.out.println("Patient location cannot be empty!");
+            else break;
+        }
 
         // create the provider
         Provider newProvider = new Provider(name, specialty, location);
-        System.out.println("Provider: " + newProvider.getProviderId() + " has been added");
-
-        // for now we will just add the provider to our providers array list
         providers.add(newProvider);
-        // we will also return the newProvider for convenience in our other methods
-        return newProvider;
+        System.out.println("Created " + newProvider);
     }
+
+    public Provider getProvider(int providerID) {
+        for (int i = 0; i < providers.size(); i++) 
+            if (providers.get(i).getProviderID() == providerID) return providers.get(i);
+        return null;
+    }
+
 
     private Appointment scheduleAppointment(Patient patient, Provider provider, long start, long end, String reason){
         Appointment apt = new Appointment(patient, provider, start, end, reason);
@@ -89,7 +104,6 @@ public class AppointmentManager {
         System.out.println("Appointment Scheduled!");
         return apt;
     }
-
 
     /**
      * Schedules an appointment, adds it to the appointments array list, and returns it.
@@ -99,7 +113,7 @@ public class AppointmentManager {
      * @return Appointment object of the created appointment, null on failure to create appointment
      * @bugs None
      */
-    public Appointment scheduleAppointment(Patient patient, Provider provider) {
+    public boolean scheduleAppointment(Patient patient, Provider provider) {
         // create our scanner object
         Scanner in = new Scanner(System.in);
 
@@ -121,7 +135,7 @@ public class AppointmentManager {
             max = (apts.get(i)).getEndDateTime();
             if ((min < start && start < max) || (min < end && end < max)){ //invalid
                 System.out.println("This provder is already scheduled for this time...");
-                return null;
+                return false;
             }
         }
 
@@ -130,11 +144,13 @@ public class AppointmentManager {
         System.out.println("Please enter a reason for the appointment");
         String reason = in.nextLine();
         
-        return scheduleAppointment(patient, provider, start, end, reason);
+        // FIX THIIIIS LATERRR
+        scheduleAppointment(patient, provider, start, end, reason);
+        return true;
     }
 
     // Update requirement
-    public Appointment rescheduleAppointment(Appointment apt) {
+    public boolean rescheduleAppointment(Appointment apt) {
         // this will just delete the old one and make a new appointment
         appoints.remove(apt);
 
@@ -175,7 +191,7 @@ public class AppointmentManager {
     // Falls under Read (Query) requirement
     
     public void getAppointmentsByPatient(Patient p){
-        long id = p.getPatientId();
+        long id = p.getPatientID();
         Appointment apt;
         Patient patient;
         for (int i = 0; i < appoints.size(); i++){
@@ -183,13 +199,13 @@ public class AppointmentManager {
             patient = apt.getPatient();
 
             // for now we will just print the appointments that match
-            if (id == patient.getPatientId())
+            if (id == patient.getPatientID())
                 System.out.println(apt);
         }
     }
 
     public ArrayList<Appointment> getAppointmentsByProvider(Provider p){
-        long id = p.getProviderId();
+        long id = p.getProviderID();
         ArrayList<Appointment> aptByProvider = new ArrayList<>();
         Appointment apt;
         Provider provider;
@@ -198,7 +214,7 @@ public class AppointmentManager {
             provider = apt.getProvider();
 
             // for this we will print AND return the modified array (useful for our business stuff)
-            if (id == provider.getProviderId()){
+            if (id == provider.getProviderID()){
                 aptByProvider.add(apt);
                 System.out.println(apt);
             }

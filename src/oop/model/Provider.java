@@ -11,7 +11,7 @@ public class Provider {
     private static int numProviders = 0;
     // ideally this is set to a length that will accomidate all providers for appearance purposes
     // for now we will use a 800 number similar to the one nmt uses - Rheggeth
-    private long providerId = 800000000;
+    private long providerID = 800000000;
     private String name;
     private String specialty;
     private String location;
@@ -29,7 +29,7 @@ public class Provider {
         if (name == null || name.isEmpty()) throw new IllegalArgumentException("Provider name cannot be empty.");
 
         // Then we create a unique ID by adding the total number of providers to the default ID - Rheggeth
-        providerId += numProviders;
+        providerID += numProviders;
         this.name = name;
         this.specialty = specialty;
         this.location = location;
@@ -37,7 +37,7 @@ public class Provider {
 
     // Getters and Setters.
 
-    public long getProviderId() { return providerId; }
+    public long getProviderID() { return providerID; }
 
     public String getName() { return name; }
 
@@ -58,6 +58,6 @@ public class Provider {
     @Override    
     public String toString() {
         return String.format("Provider [ID: %d, Name: %s, Specialty: %s, Location: %s]", 
-                providerId, name, specialty, location);
+                providerID, name, specialty, location);
     }
 }
