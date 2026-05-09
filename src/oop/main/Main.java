@@ -1,9 +1,12 @@
 package oop.main;
 
-//import oop.dao.*;
+import oop.dao.*;
 import oop.service.AppointmentManager;
 import oop.model.*;
 import java.util.Scanner;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Main class to run appointment scheduling system.
@@ -17,6 +20,20 @@ public class Main {
         Scanner in = new Scanner(System.in);
 
         // TODO Start by grabbing data from database via dao classes
+        Database db = new Database();
+
+
+        //Class.forName("org.sqlite.JDBC");
+
+        try {
+            Connection conn = db.getConnection();
+        } catch (SQLException e) {
+            System.out.println("SQL State: " + e.getSQLState());
+            System.out.println("Error Code: " + e.getErrorCode());
+            System.out.println("Message: " + e.getMessage());
+        }
+        db.initializeDatabase();
+
 
         // Create singular appointment manager instance and add in database values
         AppointmentManager manager = new AppointmentManager();
