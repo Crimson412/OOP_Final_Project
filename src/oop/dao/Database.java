@@ -17,14 +17,16 @@ import java.sql.Statement;
  * @bugs None
  */
 public class Database {
-    private static final String DB_URL = "jdbc:sqlite:clinic.db";
+    private static final String DB_URL = "jdbc:sqlite:src/oop/dao/clinic.db";
 
     /**
      * Opens a connection to the SQLite database and enables foreign keys.
      *
-     * <p>SQLite requires foreign key enforcement to be turned on for each new
+     * <p>
+     * SQLite requires foreign key enforcement to be turned on for each new
      * connection, so this method runs the PRAGMA command every time a connection
-     * is created.</p>
+     * is created.
+     * </p>
      *
      * @return an active database connection
      * @throws SQLException if the database connection cannot be opened
@@ -42,9 +44,11 @@ public class Database {
     /**
      * Creates the patients, providers, and appointments tables if needed.
      *
-     * <p>This method is called when the program starts. The tables use primary
+     * <p>
+     * This method is called when the program starts. The tables use primary
      * keys, foreign keys, and check constraints so the database matches the
-     * project requirements.</p>
+     * project requirements.
+     * </p>
      */
     public static void initializeDatabase() {
         String patientsTable =
@@ -61,7 +65,7 @@ public class Database {
             "CHECK (end_time > start_time), CHECK (status IN ('SCHEDULED', 'COMPLETED', 'CANCELLED')))";
 
         try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
+            Statement stmt = conn.createStatement()) {
 
             stmt.execute(patientsTable);
             stmt.execute(providersTable);

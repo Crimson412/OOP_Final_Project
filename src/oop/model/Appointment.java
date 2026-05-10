@@ -37,6 +37,27 @@ public class Appointment {
         this.reason = reason;
     }
 
+    /**
+     * Constructor that makes Appointment from the database.
+     *
+     * @param id this appointments id
+     * @param patient the patient for this appointment
+     * @param provider the provider for this appointment
+     * @param start the appointment start time 
+     * @param end the appointment end time 
+     * @param status the status of this appointment
+     * @param reason the reason for the visit
+     */
+    public Appointment(long id, Patient patient, Provider provider, long start, long end, AppointmentStatus status, String reason) {
+        appointmentID = id;
+        this.patient = patient;
+        this.provider = provider;
+        startDateTime = start;
+        endDateTime = end;
+        this.status = status;
+        this.reason = reason;
+    }
+
     // Getters.
 
     public long getAppointmentID() { return appointmentID; }
@@ -52,6 +73,15 @@ public class Appointment {
     public AppointmentStatus getStatus() { return status; }
 
     public String getReason() { return reason; }
+
+    /**
+     * Method that updates the number of appointments given the last ID found in the database.
+     *
+     * @bugs Hard coding the 700# feels pretty bad but appointmentID is not static
+     */
+    public static void updateNumAppointments(long lastID) {
+        numAppointments = (int)(lastID - 700000000);
+    }
 
     /**
      * Updates the status of this appointment.

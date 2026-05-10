@@ -11,7 +11,8 @@ import java.util.Objects;
  *
  * @author Rheggeth M.
  * @version Final Project, service.
- * @bugs None
+ * @bugs deleteAppointment() probably shouldn't exist but due to the foreign keys in the sqlite database
+ * it is required so that patients and provider can be deleted.
  */
 public class AppointmentManager {
     private ArrayList<Appointment> appoints = new ArrayList<>();
@@ -20,8 +21,10 @@ public class AppointmentManager {
 
     /**
      * Creates and adds a patient to our patient array list variable, only letting valid input through.
+     *
+     * @return returns the new Patient object
      */
-    public void addPatient() {
+    public Patient addPatient() {
         Scanner in = new Scanner(System.in);
         String name, dob, contact;
 
@@ -48,6 +51,12 @@ public class AppointmentManager {
         Patient newPatient = new Patient(name, dob, contact);
         patients.add(newPatient);
         System.out.println("Created: " + newPatient);
+        return newPatient;
+    }
+
+    // Setter for patients array list
+    public void setPatientsList(ArrayList<Patient> patients) {
+        this.patients = patients;
     }
 
     /**
@@ -77,8 +86,10 @@ public class AppointmentManager {
 
     /**
      * Creates and adds a provider to our provider array list variable, only letting valid input through.
+     *
+     * @return Provider object of the created provider
      */
-    public void addProvider() {
+    public Provider addProvider() {
         Scanner in = new Scanner(System.in);
         String name, specialty, location;
 
@@ -108,6 +119,12 @@ public class AppointmentManager {
         Provider newProvider = new Provider(name, specialty, location);
         providers.add(newProvider);
         System.out.println("Created " + newProvider);
+        return newProvider;
+    }
+
+    // Setter for providers array list
+    public void setProvidersList(ArrayList<Provider> providers) {
+        this.providers = providers;
     }
 
     /**
@@ -228,18 +245,20 @@ public class AppointmentManager {
      * by getDateRange() and then verifies our provider overlap business rule. If all these rules
      * pass, then the reasong is inputted and the appointment is created.
      * </p>
+     *
+     * @return Appointment object on success, null otherwise
      */
-    public void scheduleAppointment() {
+    public Appointment scheduleAppointment() {
         Scanner in = new Scanner(System.in);
         long min, max;
         Patient patient = getPatient();
-        if (patient == null) return;
+        if (patient == null) return null;
         Provider provider = getProvider();
-        if (provider == null) return;
+        if (provider == null) return null;
 
         long[] dateRange = getDateRange();
     
-        if (!verifyProviderAppointments(provider, dateRange[0], dateRange[1], null)) return;
+        if (!verifyProviderAppointments(provider, dateRange[0], dateRange[1], null)) return null;
 
         // get the reason (can be empty):
         //in.nextLine();
@@ -250,6 +269,12 @@ public class AppointmentManager {
         Appointment newApt = new Appointment(patient, provider, dateRange[0], dateRange[1], reason);
         appoints.add(newApt);
         System.out.println("Created " + newApt);
+        return newApt;
+    }
+
+    // Setter for appoints array list
+    public void setAppointmentsList(ArrayList<Appointment> appoints) {
+        this.appoints = appoints;
     }
 
     /**
@@ -276,19 +301,22 @@ public class AppointmentManager {
 
     /**
      * Attempts to reschedule an appointment time from getAppointment() and checks provider business rule.
+     *
+     * @return Appointment object if succsessfully rescheduled, null otherwise
      */
-    public void rescheduleAppointment() {
+    public Appointment rescheduleAppointment() {
         Scanner in = new Scanner(System.in);
         Appointment apt = getAppointment();
-        if (apt == null) return;
+        if (apt == null) return null;
 
         long[] dateRange = getDateRange();
 
         // Ensure the reschedule still holds the provider business rule
-        if (!verifyProviderAppointments(apt.getProvider(), dateRange[0], dateRange[1], apt)) return;
+        if (!verifyProviderAppointments(apt.getProvider(), dateRange[0], dateRange[1], apt)) return null;
 
         apt.reschedule(dateRange[0], dateRange[1]);
         System.out.println("Reschedule successful! " + apt);
+        return apt;
     }
 
     /**
@@ -411,25 +439,43 @@ public class AppointmentManager {
 
     /**
      * Method that deletes a patient, returns early if invalid patient entered.
+     *
+     * @return Patient object if successfully deleted, null otherwise
      */
-    public void deletePatient() {
+    public Patient deletePatient() {
         Patient patient = getPatient();
-        if (patient == null) return;
+        if (patient == null) return null;
 
         patients.remove(patient);
         System.out.println("Removed: " + patient);
+        return patient;
     }
 
     /**
      * Method that deletes a provider, returns early if invalid provider entered.
+     *
+     * @return Provider object if successful, null otherwise
      */
-    public void deleteProvider() {
+    public Provider deleteProvider() {
         Provider provider = getProvider();
-        if (provider == null) return;
+        if (provider == null) return null;
 
         providers.remove(provider);
         System.out.println("Removed: " + provider);
+        return provider;
     }
 
-    // There is no delete Appointment as we figured these should stay for record purposes.
+    /**
+     * Method that deletes an appointment, returns early if invalid appointment entered.
+     *
+     * @return Appointment object if successful, null otherwise
+     */
+    public Appointment deleteAppointment() {
+        Appointment apt = getAppointment();
+        if (apt == null) return null;
+
+        appoints.remove(apt);
+        System.out.println("Removed: " + apt);
+        return apt;
+    }
 }

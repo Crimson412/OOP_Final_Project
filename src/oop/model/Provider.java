@@ -31,6 +31,21 @@ public class Provider {
         this.location = location;
     }
 
+    /**
+     * Constructor used when we already know the providers ID, when we load in from sql database.
+     *
+     * @param id the providerss id
+     * @param name the providerss name
+     * @param specialty the providers specialty
+     * @param location the providers location
+     */
+    public Provider(long id, String name, String specialty, String location) {
+        providerID = id;
+        this.name = name;
+        this.specialty = specialty;
+        this.location = location;
+    }
+
     // Getters and Setters.
 
     public long getProviderID() { return providerID; }
@@ -46,6 +61,15 @@ public class Provider {
     public String getLocation() { return location; }
 
     public void setLocation(String location) { this.location = location; }
+
+    /**
+     * Method that updates the number of providers given the last ID found in the database.
+     *
+     * @bugs Hard coding the 800# feels pretty bad but providerID is not static
+     */
+    public static void updateNumProviders(long lastID) {
+        numProviders = (int)(lastID - 800000000);
+    }
 
     /**
      * Returns a string representation of this provider.

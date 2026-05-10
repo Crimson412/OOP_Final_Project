@@ -32,6 +32,21 @@ public class Patient {
         this.contactInfo = contactInfo;
     }
 
+    /**
+     * Constructor used when we already know the patients ID, when we load in from sql database.
+     *
+     * @param id the patients id
+     * @param name the patients name
+     * @param DOB the patients date of birth
+     * @param contact the patients contact info
+     */
+    public Patient(long id, String name, String DOB, String contact) {
+        patientID = id;
+        this.name = name;
+        dateOfBirth = DOB;
+        contactInfo = contact;
+    }
+
     // Getters and Setters.
 
     public long getPatientID() { return patientID; }
@@ -47,6 +62,16 @@ public class Patient {
     public String getContactInfo() { return contactInfo; }
 
     public void setContactInfo(String contactInfo) { this.contactInfo = contactInfo; }
+
+
+    /**
+     * Method that updates the number of patients given the last ID found in the database.
+     *
+     * @bugs Hard coding the 900# feels pretty bad but patientID is not static
+     */
+    public static void updateNumPatients(long lastID) {
+        numPatients = (int)(lastID - 900000000);
+    }
 
     /**
      * Returns a string representation of this patient.
