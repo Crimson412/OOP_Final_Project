@@ -77,6 +77,29 @@ file does not have execute permissions you will need to use chmod to give it
 them). Since the interface of this program is on the command line you will then
 start to see the prompts for input appear on your screen afterwards.
 
+Example of how to run the program:
+```
+rheggeth@Violet:~/Documents/test$ git clone git@github.com:Crimson412/OOP_Final_Project.git
+Cloning into 'OOP_Final_Project'...
+remote: Enumerating objects: 206, done.
+remote: Counting objects: 100% (206/206), done.
+remote: Compressing objects: 100% (121/121), done.
+remote: Total 206 (delta 82), reused 173 (delta 58), pack-reused 0 (from 0)
+Receiving objects: 100% (206/206), 6.34 MiB | 8.41 MiB/s, done.
+Resolving deltas: 100% (82/82), done.
+rheggeth@Violet:~/Documents/test$ ls
+OOP_Final_Project
+rheggeth@Violet:~/Documents/test$ cd OOP_Final_Project/
+rheggeth@Violet:~/Documents/test/OOP_Final_Project$ ls
+lib  README.md  run.sh  src
+rheggeth@Violet:~/Documents/test/OOP_Final_Project$ ./run.sh 
+Database finished loading
+
+Which action would you like to perform?
+Create, Read, Update, or Delete [C, R, U, D, or Q to Quit]
+> c
+```
+
 ## Example usage
 Here is the terminal output for a sample run where we create a patient and
 appointment, there is also some patients and providers from previous runs:
