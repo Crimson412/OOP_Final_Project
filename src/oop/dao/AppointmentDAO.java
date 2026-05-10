@@ -89,7 +89,7 @@ public class AppointmentDAO {
      * @param appointmentId the ID of the appointment to update
      * @param status the new appointment status
      */
-    public void updateAppointmentStatus(long appointmentId, AppointmentStatus status) {
+    public static void updateAppointmentStatus(long appointmentId, AppointmentStatus status) {
         String sql = "UPDATE appointments SET status = ? WHERE appointment_id = ?";
 
         try (Connection conn = Database.getConnection();
@@ -114,7 +114,7 @@ public class AppointmentDAO {
      * @param newStartTime the new start time
      * @param newEndTime the new end time
      */
-    public void rescheduleAppointment(long appointmentId, long newStartTime, long newEndTime) {
+    public static void rescheduleAppointment(long appointmentId, long newStartTime, long newEndTime) {
         String sql = "UPDATE appointments SET start_time = ?, end_time = ? WHERE appointment_id = ?";
 
         try (Connection conn = Database.getConnection();

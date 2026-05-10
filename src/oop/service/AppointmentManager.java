@@ -321,14 +321,17 @@ public class AppointmentManager {
 
     /**
      * Method which updates an inputted apointments status, returns early if no appointment found.
+     *
+     * @return the updated Appointment object if successful, null otherwise
      */
-    public void updateAppointmentStatus() {
+    public Appointment updateAppointmentStatus() {
         Appointment apt = getAppointment();
-        if (apt == null) return;
+        if (apt == null) return null;
         
         AppointmentStatus status = getAppointmentStatus();
         apt.updateStatus(status);
         System.out.println("Status change successful! " + apt);
+        return apt;
     }
 
 

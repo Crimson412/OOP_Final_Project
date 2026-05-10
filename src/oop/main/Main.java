@@ -147,11 +147,14 @@ public class Main {
                         switch (input) {
                             case '1':
                                 // reschedule appointment
-                                manager.rescheduleAppointment();
+                                apt = manager.rescheduleAppointment();
+                                if (apt != null)
+                                    AppointmentDAO.rescheduleAppointment(apt.getAppointmentID(), apt.getStartDateTime(), apt.getEndDateTime());
                                 break;
                             case '2':
                                 // update appointment status
-                                manager.updateAppointmentStatus();
+                                apt = manager.updateAppointmentStatus();
+                                if (apt != null) AppointmentDAO.updateAppointmentStatus(apt.getAppointmentID(), apt.getStatus());
                                 break;
                             case '3':
                                 // go back a step
