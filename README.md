@@ -80,7 +80,7 @@ start to see the prompts for input appear on your screen afterwards.
 ## Example usage
 Here is the terminal output for a sample run where we create a patient and
 appointment, there is also some patients and providers from previous runs:
-
+```
 rheggeth@Violet:~/School/CompSci/OOP/OOP_Final_Project$ ./run.sh 
 Database finished loading
 
@@ -181,8 +181,9 @@ Create, Read, Update, or Delete [C, R, U, D, or Q to Quit]
 > q
 Exiting...
 rheggeth@Violet:~/School/CompSci/OOP/OOP_Final_Project$
+```
 
 ## Authors
--Rheggeth (L.Marez)
--Noah W.
--Luis Franco
+* Rheggeth (L.Marez)
+* Noah W.
+* Luis Franco
